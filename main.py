@@ -16,10 +16,6 @@ llm = ChatGoogleGenerativeAI(
     google_api_key=os.getenv("GOOGLE_API_KEY")
 )
 
-# LangSmith 트래커 설정
-tracer = LangChainTracer(project_name=os.getenv("LANGCHAIN_PROJECT"))
-llm_with_tracing = llm.with_config({"callbacks": [tracer]})
-
 # prompt trmplate 생성
 prompt = ChatPromptTemplate.from_messages([
     ("system","You are helpful assistant."),
@@ -31,7 +27,7 @@ output_parser = StrOutputParser()
 
 
 # LLM 체인 구성 
-chain = prompt | llm_with_tracing | output_parser
+chain = prompt | llm | output_parser
 
 # 제목
 st.title("인공지능 시인")
