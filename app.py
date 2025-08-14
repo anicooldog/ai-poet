@@ -18,24 +18,9 @@ from langchain_core.runnables import RunnablePassthrough
 from sentence_transformers import SentenceTransformer
 from langchain_huggingface import HuggingFaceEmbeddings
 
+# GOOGLE키 받기
 
-# -----------------------------
-# 환경 변수 로드
-# -----------------------------
-# 기본 로드
-load_dotenv()
-# 보조 탐색 (원하시는 경로 추가 가능)
-candidates = [
-    Path(".env"),
-    Path(__file__).parent / ".env",
-    Path(__file__).parent.parent / ".env",
-    Path(__file__).parent.parent / "poet" / ".env",
-]
-for p in candidates:
-    if p.exists():
-        load_dotenv(dotenv_path=p, override=True)
-
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+GOOGLE_API_KEY = st.text_input('GOOGLE_GEMINI_API_KEY 를 입력하세요',type="password")
 
 # -----------------------------
 # Streamlit UI
