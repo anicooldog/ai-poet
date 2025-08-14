@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-from langchain_chroma import Chroma
+# from langchain_chroma import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain.retrievers.multi_query import MultiQueryRetriever
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -98,7 +99,7 @@ if st.session_state.texts is not None:
                 embeddings = HuggingFaceEmbeddings(model_name="upskyy/bge-m3-korean")
                 
                 # 메모리 벡터DB (필요 시 persist_directory 지정)
-                st.session_state.vectorstore = Chroma.from_documents(
+                st.session_state.vectorstore = FAISS.from_documents(
                     st.session_state.texts, embeddings
                 )
                 st.success("✅ 임베딩 및 벡터DB 구축 완료")
@@ -120,7 +121,7 @@ if st.session_state.vectorstore is not None:
     )
 
     # MultiQueryRetriever: 질문을 다양한 관점으로 확장해 더 좋은 문서를 검색
-    base_retriever = st.session_state.vectorstore.as_retriever()
+    base_retriever = st.session_state.vectorstore.as_retriever(search_kwargs={"k":4})
 
     # 프롬프트 (로컬 템플릿 사용: hub.pull 의존 제거)
     prompt = PromptTemplate(
