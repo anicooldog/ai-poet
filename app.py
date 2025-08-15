@@ -17,10 +17,11 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from sentence_transformers import SentenceTransformer
 from langchain_huggingface import HuggingFaceEmbeddings
+from streamlit_extras.buy_me_a_coffee import button
 
 # GOOGLE키 받기
 
-GOOGLE_API_KEY = st.text_input('GOOGLE_GEMINI_API_KEY 를 입력하세요',type="password")
+
 
 # -----------------------------
 # Streamlit UI
@@ -29,9 +30,15 @@ st.set_page_config(page_title="ChatPDF", page_icon="📄")
 st.title("📄 ChatPDF (Upload → Split → Embed → Ask)")
 st.write("---")
 
+# gemini 키 입력받기
+GOOGLE_API_KEY = st.text_input('GOOGLE_GEMINI_API_KEY 를 입력하세요',type="password")
+
 # 파일 업로드
 upload_file = st.file_uploader("pdf 파일을 올려주세요!", type=["pdf"])
 st.write("---")
+
+# byu me a coffee
+button(username="{quuulafafa}", floating=True, width=221)
 
 # 세션 상태 키 초기화
 for k in ["texts", "vectorstore", "retriever_ready"]:
@@ -64,6 +71,7 @@ if upload_file is not None:
             is_separator_regex=False,
         )
         texts = splitter.split_documents(pages)
+
         st.session_state.texts = texts
         st.info(f"✅ 텍스트 분할 완료: 총 {len(texts)}개 청크")
 
