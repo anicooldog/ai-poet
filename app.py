@@ -38,7 +38,7 @@ upload_file = st.file_uploader("pdf 파일을 올려주세요!", type=["pdf"])
 st.write("---")
 
 # byu me a coffee
-button(username="{quuulafafa}", floating=True, width=221)
+button(username="quuulafafa", floating=True, width=221)
 
 # 세션 상태 키 초기화
 for k in ["texts", "vectorstore", "retriever_ready"]:
